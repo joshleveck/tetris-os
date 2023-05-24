@@ -3,8 +3,11 @@
 void main()
 {
     uart_init();
-    uart_writeText("Hello, world!\n");
-    int a  = 1/0;
-    while (1)
-        ;
+
+    uart_puts("Hello, world!\n");
+
+
+    while (1) {
+        uart_send(uart_getc());
+    }
 }

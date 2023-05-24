@@ -3,17 +3,18 @@
 .global _start
 
 _start:
-    // Check PID is 0, or hang
+    // read cpu id
     mrs     x1, mpidr_el1
     and     x1, x1, #3
     cbz     x1, 2f
-    // Not main core, infinite loop
+    // cpu id > 0, stop
 1:  wfe
     b       1b
-2:  // Main core
+2:  // cpu id == 0
     ldr     x1, =_start
     mov     sp, x1
 
+    // clear bss
     ldr     x1, =__bss_start
     ldr     w2, =__bss_size
 3:  cbz     w2, 4f
@@ -21,5 +22,7 @@ _start:
     sub     w2, w2, #1
     cbnz    w2, 3b
 
+    // jump to C code, should not return
 4:  bl      main
+    // for failsafe, halt this core too, (what happens??)
     b       1b

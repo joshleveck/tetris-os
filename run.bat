@@ -1,2 +1,2 @@
 make
-qemu-system-aarch64 -M raspi4 -kernel bin/kernel8.img -serial stdio
+qemu-system-aarch64 -M raspi3b -kernel bin/kernel8.img -serial null -serial stdio
