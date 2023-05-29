@@ -1,7 +1,8 @@
 #include "uart.h"
 #include "mbox.h"
 #include "delay.h"
-#include "tetro.h"
+#include "drawing.h"
+#include "colour.h"
 
 /* PC Screen Font as used by Linux Console */
 typedef struct
@@ -257,6 +258,7 @@ void lfb_proprint(int x, int y, char *s)
 void draw_block_simple(int x, int y, unsigned int colour)
 {
     unsigned char *ptr = lfb;
+    colour = ((colour & 0xFF) << 16) | ((colour & 0xFF00)) | ((colour & 0xFF0000) >> 16);
 
     ptr += (y * pitch * SQUARE_LENGTH) + (x * 4 * SQUARE_LENGTH);
     for (int i = 0; i < SQUARE_LENGTH; i++)
@@ -277,7 +279,7 @@ void draw_x_line(int start_x, int start_y, int length, unsigned int colour)
 
     for (int i = 0; i < length; i++)
     {
-        *((unsigned int *)ptr1) = colour + UPPER_OFFSET;
+        *((unsigned int *)ptr1) = colour;
         ptr1 += 4;
     }
 }
@@ -289,7 +291,7 @@ void draw_y_line(int start_x, int start_y, int length, unsigned int colour)
 
     for (int i = 0; i < length; i++)
     {
-        *((unsigned int *)ptr1) = colour + UPPER_OFFSET;
+        *((unsigned int *)ptr1) = colour;
         ptr1 += pitch;
     }
 }
@@ -297,13 +299,14 @@ void draw_y_line(int start_x, int start_y, int length, unsigned int colour)
 void draw_block(int x, int y, unsigned int colour)
 {
     draw_block_simple(x, y, colour);
-    int width = 3;
+    // int width = 3;
 
-    for (int i = 0; i < width; i++) {
-        draw_x_line(x * SQUARE_LENGTH + i, y * SQUARE_LENGTH + i, SQUARE_LENGTH - i  *2, colour + UPPER_OFFSET);
-        draw_y_line(x * SQUARE_LENGTH + i, y * SQUARE_LENGTH + i, SQUARE_LENGTH - i * 2, colour + UPPER_OFFSET);
+    // for (int i = 0; i < width; i++)
+    // {
+    //     draw_x_line(x * SQUARE_LENGTH + i, y * SQUARE_LENGTH + i, SQUARE_LENGTH - i * 2, colour + UPPER_OFFSET);
+    //     draw_y_line(x * SQUARE_LENGTH + i, y * SQUARE_LENGTH + i, SQUARE_LENGTH - i * 2, colour + UPPER_OFFSET);
 
-        draw_x_line(x * SQUARE_LENGTH + i, y * SQUARE_LENGTH + SQUARE_LENGTH - i, SQUARE_LENGTH - i * 2, colour - LOWER_OFFSET*3);
-        draw_y_line(x * SQUARE_LENGTH + SQUARE_LENGTH - i, y * SQUARE_LENGTH + i, SQUARE_LENGTH - i * 2, colour - LOWER_OFFSET*3);
-    }
+    //     draw_x_line(x * SQUARE_LENGTH + i, y * SQUARE_LENGTH + SQUARE_LENGTH - i, SQUARE_LENGTH - i * 2, colour - LOWER_OFFSET);
+    //     draw_y_line(x * SQUARE_LENGTH + SQUARE_LENGTH - i, y * SQUARE_LENGTH + i, SQUARE_LENGTH - i * 2, colour - LOWER_OFFSET);
+    // }
 }

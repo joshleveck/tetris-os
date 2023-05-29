@@ -83,6 +83,13 @@ char uart_getc()
     return r == '\r' ? '\n' : r;
 }
 
+char check_uart_getc()
+{
+    if (*UART0_FR & 0x10)
+        return 0;
+    return (char)(*UART0_DR);
+}
+
 /**
  * Display a string
  */

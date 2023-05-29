@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "lfb.h": "c"
+        "lfb.h": "c",
+        "tetro.h": "c",
+        "drawing.h": "c",
+        "colour.h": "c"
     }
 }
