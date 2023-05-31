@@ -1,7 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-typedef struct 
+typedef struct
 {
     int x;
     int y;
@@ -9,11 +9,11 @@ typedef struct
     int tetro;
 } State;
 
-typedef struct 
+typedef struct
 {
     int width;
     int height;
-    int *data;
+    int (*data)[10][20];
 } Board;
 
 #endif
